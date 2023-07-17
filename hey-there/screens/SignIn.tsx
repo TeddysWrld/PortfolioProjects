@@ -2,7 +2,7 @@ import { View, Text, SafeAreaView,Image, TextInput, TouchableOpacity } from 'rea
 import React from 'react'
 import {hexColours} from '../constants'
 
-export const SignIn = () => {
+export const SignIn = ({navigation}:any) => {
   return (
     <SafeAreaView className={`bg-[${hexColours.Purple}] flex-1 space-y-7`}>
       <View className='items-center mt-10'>
@@ -21,7 +21,7 @@ export const SignIn = () => {
         </TouchableOpacity>
       </View>
       <View className=' space-y-3 items-center '>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={()=>{navigation.navigate('SignUp')}}>
           <Text  className='text-white text-[16px]'>Don't have an account? Sign Up</Text>
         </TouchableOpacity>
         <TouchableOpacity >

@@ -3,6 +3,7 @@ import { SignIn, SignUp } from './screens';
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Tabs from './screens/Tabs';
 
 export default function App() {
   const AppStack = createNativeStackNavigator();

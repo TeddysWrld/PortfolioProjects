@@ -3,8 +3,12 @@ import { SignIn, SignUp } from './screens';
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from './firebase.config';
 
 export default function App() {
+  const app = initializeApp(firebaseConfig);
+
   const AppStack = createNativeStackNavigator();
   return (
     <NavigationContainer>

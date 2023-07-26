@@ -1,10 +1,38 @@
 import { View, Text, SafeAreaView,Image, TextInput, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { hexColours } from '../constants'
+import {createUserWithEmailAndPassword} from "firebase/auth";
+import { auth, db } from '../firebase.config';
+import { addDoc, collection } from 'firebase/firestore/lite';
 
 export const SignUp = ({navigation}:any) => {
+
+  const [name, setName] = useState("")
+  const [surname, setSurname] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
+
+  const handleSignUp = ()=>{
+    createUserWithEmailAndPassword(auth, "ofentsekea.mokele@gmail.com","FentseTM@21").then((credentials)=> {
+      console.log("new credentials", credentials);
+      
+    })
+  }
+
+  const newUserFirebase = async ()=>{
+    const newUser = await addDoc(collection(db,'Users'), {Name: "testName", Surname: "testSurname", Email:"test@gmail.com", UserId:"TestIDS"})
+    console.log(newUser);
+    
+  }
+
+  useEffect(()=>{
+    // handleSignUp()
+    // newUserFirebase()
+  },[])
+
   return (
-    <SafeAreaView className={`bg-[${hexColours.Purple}] flex-1 space-y-7`}>
+    <SafeAreaView className={`bg-indigo-950 flex-1 space-y-7`}>
     <View className='items-center mt-10'>
       <Image source={require("../assets/Hand.png")} className='w-[150px] h-[150px]'/>
     </View>
@@ -19,7 +47,7 @@ export const SignUp = ({navigation}:any) => {
       <TextInput placeholder='Confirm Password' className='w-[80%] h-[40px] border border-black bg-white rounded-[10px] pl-2 text-[20px]'/>
     </View>
     <View className='items-center justify-end'>
-      <TouchableOpacity className={`border border-black h-[60px] w-[50%] rounded-[10px] bg-[${hexColours.Blue}] items-center justify-center`}>
+      <TouchableOpacity className={`border border-black h-[60px] w-[50%] rounded-[10px] bg-blue-600 items-center justify-center`}>
         <Text className='text-white text-[20px] font-bold'>Sign Up</Text>
       </TouchableOpacity>
     </View>

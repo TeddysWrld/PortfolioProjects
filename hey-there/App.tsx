@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { db } from './firebase.config';
 import { collection, getDoc, getDocs } from 'firebase/firestore/lite';
 
+import Tabs from './screens/Tabs';
 
 export default function App() {
 

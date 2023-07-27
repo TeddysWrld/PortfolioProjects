@@ -1,18 +1,20 @@
 import { View, Text, SafeAreaView,Image, TextInput, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
-// import {hexColours} from '../constants'
-import firebase from "firebase/app";
-import "firebase/auth";
-import { collection, getDoc, getDocs, doc, setDoc } from 'firebase/firestore/lite';
-import { db } from '../firebase.config';
+import { Login } from '../hooks'
 
 export const SignIn = ({navigation}:any) => {
 
-  const [email, setEmail] = useState()
-  const [password, setPassword] = useState()
+  const [email, setEmail] = useState('ofentsekea.mokele@gmail.com')
+  const [password, setPassword] = useState('FentseTM@21')
 
-  const handleLogin = ()=>{
-    
+  const handleLogin = ()=>{  
+    if(email == ''|| password==''){
+      console.log("Please enter a email and password");
+      
+    }
+    else{
+      Login(email,password)
+    }    
   }
 
   return (
@@ -24,11 +26,11 @@ export const SignIn = ({navigation}:any) => {
         <Text className='text-white text-[40px] font-bold'>SIGN IN</Text>
       </View>
       <View className='items-center space-y-6'>
-        <TextInput placeholder='Email' className='w-[80%] h-[40px] border border-black bg-white rounded-[10px] pl-2 text-[20px]'/>
-        <TextInput placeholder='Password' className='w-[80%] h-[40px] border border-black bg-white rounded-[10px] pl-2 text-[20px]'/>
+        <TextInput placeholder='Email' onChangeText={(emailVal)=> setEmail(emailVal)} className='w-[80%] h-[40px] border border-black bg-white rounded-[10px] pl-2 text-[20px]'/>
+        <TextInput placeholder='Password' onChangeText={(passwordVal)=> setPassword(passwordVal)} className='w-[80%] h-[40px] border border-black bg-white rounded-[10px] pl-2 text-[20px]'/>
       </View>
       <View className='items-center justify-end'>
-        <TouchableOpacity onPress={()=>{navigation.navigate('Home')}} className={`border border-black h-[60px] w-[50%] rounded-[10px] bg-blue-600 items-center justify-center`}>
+        <TouchableOpacity onPress={handleLogin} className={`border border-black h-[60px] w-[50%] rounded-[10px] bg-blue-600 items-center justify-center`}>
           <Text className='text-white text-[20px] font-bold'>Login</Text>
         </TouchableOpacity>
       </View>

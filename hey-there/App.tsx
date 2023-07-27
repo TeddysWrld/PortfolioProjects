@@ -1,39 +1,55 @@
 import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useEffect } from 'react';
-import { db } from './firebase.config';
-import { collection, getDoc, getDocs } from 'firebase/firestore/lite';
-
+import { useEffect, useState } from 'react';
+import { auth } from './firebase.config';
 import { HomeScreen } from './screens/Tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { SignIn, SignUp } from './screens';
+import {onAuthStateChanged} from "firebase/auth";
 
 export default function App() {
 
-  const AppStack = createNativeStackNavigator();
-
-  async function getUsers(){
-
-    const userCol = collection(db, 'Users')
-    const docSnap = await getDocs(userCol)
-    docSnap.forEach((doc)=>{
-      console.log(doc.data());
-      
-    })
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
+  
+  function authStateChange(user:any) {
+    setUser(user);
+    if (initializing) setInitializing(false);
   }
 
   useEffect(()=>{
-    getUsers()
-
+    const subscriber = onAuthStateChanged(auth, authStateChange)
+    return subscriber; // unsubscribe on unmount
   }, [])
 
-  return (
-    <NavigationContainer>
-      <AppStack.Navigator initialRouteName='Home'>
-        <AppStack.Screen name="SignUp" component={SignUp} options={{headerShown:false}} />
-        <AppStack.Screen name="SignIn" component={SignIn} options={{headerShown:false}} />
-        <AppStack.Screen name="Home" component={HomeScreen} options={{headerShown:false}} />
-      </AppStack.Navigator>
-    </NavigationContainer>
-  );
+  //Add loading screen
+  if (initializing) return null;
+
+  if (!user) return AuthStack()
+
+  return AppStack()
+}
+
+
+const AppStack =()=>{
+  const AppStack = createNativeStackNavigator();
+
+  return ( 
+  <NavigationContainer>
+    <AppStack.Navigator initialRouteName='Home'>
+      <AppStack.Screen name="Home" component={HomeScreen} options={{headerShown:false}} />
+    </AppStack.Navigator>
+  </NavigationContainer>)
+}
+
+const AuthStack =()=>{
+  const authStack = createNativeStackNavigator();
+
+  return ( 
+  <NavigationContainer>
+    <authStack.Navigator initialRouteName='SignIn'>
+      <authStack.Screen name="SignIn" component={SignIn} options={{headerShown:false}} />
+      <authStack.Screen name="SignUp" component={SignUp} options={{headerShown:false}} />
+    </authStack.Navigator>
+  </NavigationContainer>)
 }

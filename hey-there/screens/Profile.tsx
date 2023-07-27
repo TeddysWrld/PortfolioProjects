@@ -6,12 +6,14 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-  Pressable,
 } from "react-native";
 import React from "react";
-import { hexColours } from "../constants";
+import { SignOut } from "../hooks/firebaseHooks";
 
-export const Profile = ({navigation}:any) => {
+export const Profile = () => {
+  const handleSignOut =()=>{    
+    SignOut()
+  }
   return (
     <SafeAreaView className={`flex-1 space-y-7`}>
       <View className="flex-1 items-center justify-center gap-8">
@@ -51,7 +53,7 @@ export const Profile = ({navigation}:any) => {
            Change password?
         </Text>
 
-        <TouchableOpacity  className="bg-black w-[40%] rounded-[15px]" onPress={()=>{navigation.navigate('SignIn')}}>
+        <TouchableOpacity  className="bg-black w-[40%] rounded-[15px]" onPress={handleSignOut}>
           <Text className="text-white text-bold">LogOut</Text>
         </TouchableOpacity>
       </ScrollView>

@@ -4,9 +4,7 @@ import {
   SafeAreaView,
   Image,
   TextInput,
-  TouchableOpacity,
   ScrollView,
-  Pressable,
 } from "react-native";
 import React from "react";
 import { hexColours } from "../constants";

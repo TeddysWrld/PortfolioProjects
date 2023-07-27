@@ -6,15 +6,41 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {hexColours} from '../constants'
+import { Conversation } from './Conversation';
+
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 
+const MessageStack = ({navigation}: any) => (
+    <Stack.Navigator>
+        <Stack.Screen 
+        name="Home" 
+        component={Chats}
+        options={{headerShown: false}}
+        />
+        <Stack.Screen
+         name="Conversation" 
+         component={Conversation} 
+         options={({route}: any) => ({
+            title: route.params?.name,
+            headerBackTitleVisible: false,
+            headerTitleAlign: 'center',
+          })}/>
+    </Stack.Navigator>
+);
+
+ 
+
+
+
 export function HomeScreen()
 {
     return(
-        <Tab.Navigator initialRouteName='Home' 
+        <Tab.Navigator 
+        id="tabs"
+        initialRouteName='Home' 
         screenOptions={{
             headerShown: false, 
             tabBarShowLabel: false,
@@ -23,9 +49,13 @@ export function HomeScreen()
             }}}>
             <Tab.Screen 
             name='Chats' 
-            component={Chats}
-            options={{ tabBarIcon: ({focused}) =>(
-            <Ionicons name={ focused? "chatbubbles" : "chatbubbles-outline"} size={30} color={`${hexColours.Purple}`}/>) }}/>
+            component={MessageStack}
+            options={({route}) => ({
+                tabBarIcon: ({focused}) => (
+                    <Ionicons name={ focused? "chatbubbles" : "chatbubbles-outline"} size={30} color={`${hexColours.Purple}`}/>
+                ),
+              })}
+            />
 
             <Tab.Screen 
             name='Contacts' 

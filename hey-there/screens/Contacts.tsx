@@ -67,19 +67,21 @@ const contacts = [
   },
 ];
 
-export const Contacts = () => {
+export const Contacts = ({navigation}: any) => {
   return (
-    <SafeAreaView className={`flex-1 mt-10`}>
-      {/* <HeadContainer>
-        <HeaderText>Start Conversation</HeaderText>
-        <SearchBarInput></SearchBarInput>
-      </HeadContainer>
+    <SafeAreaView className={`flex-1`}>
       <Container>
-        <FlatList
+        <FlatList 
+          ListHeaderComponent={
+      <>
+      <HeaderText>Start Conversation</HeaderText>
+      <SearchBarInput></SearchBarInput>
+      </>
+          }
           data={contacts}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <Card>
+            <Card onPress={() => navigation.navigate('Conversation',{ name: item.userName})}>
               <UserInfo>
                 <UserImgWrapper>
                   <UserImg source={item.userImg} />
@@ -93,9 +95,7 @@ export const Contacts = () => {
             </Card>
           )}
         ></FlatList>
-      </Container> */}
-      <Text>Contact page </Text>
-
+      </Container>
     </SafeAreaView>
   );
 };

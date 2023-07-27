@@ -8,9 +8,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React from "react";
+import { SignOut } from "../hooks/firebaseHooks";
 
-
-export const Profile = ({navigation}:any) => {
+export const Profile = () => {
+  const handleSignOut =()=>{    
+    SignOut()
+  }
   return (
     <SafeAreaView className={`flex-1`}>
      <View className="flex-1 items-center justify-center gap-6">
@@ -57,9 +60,8 @@ export const Profile = ({navigation}:any) => {
         <Text style={{ color: `#0000EE` }} className="text-base pl-4">
            Change password?
         </Text>
-
-      <View className=' space-y-4 items-center '>
-        <TouchableOpacity  className="bg-[#d90429] w-[40%] h-[30%] rounded-[6px]" onPress={()=>{navigation.navigate('SignIn')}}>
+        <View>
+        <TouchableOpacity  className="bg-[#d90429] w-[40%] h-[30%] rounded-[6px]" onPress={handleSignOut}>
           <Text className="text-white font-bold text-center text-[16px] py-1">LogOut</Text>
         </TouchableOpacity>
       </View>

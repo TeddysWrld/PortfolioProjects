@@ -1,35 +1,26 @@
 import { View, Text, SafeAreaView,Image, TextInput, TouchableOpacity } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { hexColours } from '../constants'
-import {createUserWithEmailAndPassword} from "firebase/auth";
-import { auth, db } from '../firebase.config';
-import { addDoc, collection } from 'firebase/firestore/lite';
+import React, { useState } from 'react'
+import { signUp } from '../hooks'
 
-export const SignUp = ({navigation}:any) => {
-
+export const SignUp = () => {
+  
   const [name, setName] = useState("")
   const [surname, setSurname] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
 
-  const handleSignUp = ()=>{
-    createUserWithEmailAndPassword(auth, "ofentsekea.mokele@gmail.com","FentseTM@21").then((credentials)=> {
-      console.log("new credentials", credentials);
-      
-    })
-  }
+  const handleSignUp =()=>{
+    if(name == "" || surname ==""|| email == ""){
+      console.log("Fields are missing")
+    }
+    if(password != confirmPassword){
+      console.log("Passwords dont match")
+    }
 
-  const newUserFirebase = async ()=>{
-    const newUser = await addDoc(collection(db,'Users'), {Name: "testName", Surname: "testSurname", Email:"test@gmail.com", UserId:"TestIDS"})
-    console.log(newUser);
-    
-  }
+   signUp(email,password,name,surname)
 
-  useEffect(()=>{
-    // handleSignUp()
-    // newUserFirebase()
-  },[])
+  }
 
   return (
     <SafeAreaView className={`bg-indigo-950 flex-1 space-y-7`}>
@@ -40,20 +31,21 @@ export const SignUp = ({navigation}:any) => {
       <Text className='text-white text-[40px] font-bold'>SIGN Up</Text>
     </View>
     <View className='items-center space-y-6'>
-      <TextInput placeholder='Name' className='w-[80%] h-[40px] border border-black bg-white rounded-[10px] pl-2 text-[20px]'/>
-      <TextInput placeholder='Surname' className='w-[80%] h-[40px] border border-black bg-white rounded-[10px] pl-2 text-[20px]'/>
-      <TextInput placeholder='Email' className='w-[80%] h-[40px] border border-black bg-white rounded-[10px] pl-2 text-[20px]'/>
-      <TextInput placeholder='Password' className='w-[80%] h-[40px] border border-black bg-white rounded-[10px] pl-2 text-[20px]'/>
-      <TextInput placeholder='Confirm Password' className='w-[80%] h-[40px] border border-black bg-white rounded-[10px] pl-2 text-[20px]'/>
+      <TextInput onChangeText={(nameVal)=>{setName(nameVal)}} placeholder='Name' className='w-[80%] h-[40px] border border-black bg-white rounded-[10px] pl-2 text-[20px]'/>
+      <TextInput onChangeText={(surnameVal)=>{setSurname(surnameVal)}} placeholder='Surname' className='w-[80%] h-[40px] border border-black bg-white rounded-[10px] pl-2 text-[20px]'/>
+      <TextInput onChangeText={(emailVal)=>{setEmail(emailVal)}} placeholder='Email' className='w-[80%] h-[40px] border border-black bg-white rounded-[10px] pl-2 text-[20px]'/>
+      <TextInput onChangeText={(passwordVal)=>{setPassword(passwordVal)}} placeholder='Password' className='w-[80%] h-[40px] border border-black bg-white rounded-[10px] pl-2 text-[20px]'/>
+      <TextInput onChangeText={(confirmVal)=>{setConfirmPassword(confirmVal)}}placeholder='Confirm Password' className='w-[80%] h-[40px] border border-black bg-white rounded-[10px] pl-2 text-[20px]'/>
     </View>
     <View className='items-center justify-end'>
-      <TouchableOpacity className={`border border-black h-[60px] w-[50%] rounded-[10px] bg-blue-600 items-center justify-center`}>
+      <TouchableOpacity onPress={handleSignUp} className={`border border-black h-[60px] w-[50%] rounded-[10px] bg-blue-600 items-center justify-center`}>
         <Text className='text-white text-[20px] font-bold'>Sign Up</Text>
       </TouchableOpacity>
     </View>
-    <View className=' space-y-3 items-center '>
-    <TouchableOpacity onPress={()=>{navigation.navigate('SignIn')}}>
-        <Text  className='text-white text-[16px]'>Already have an account? Sign In</Text>
+    <View className=' space-y-3 items-center'>
+
+    <TouchableOpacity>
+        <Text className='text-white text-[16px]'>Already have an account? Sign In</Text>
       </TouchableOpacity>
     </View>
 

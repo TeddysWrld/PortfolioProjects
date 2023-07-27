@@ -28,7 +28,7 @@ export const SignIn = ({navigation}:any) => {
         <TextInput placeholder='Password' className='w-[80%] h-[40px] border border-black bg-white rounded-[10px] pl-2 text-[20px]'/>
       </View>
       <View className='items-center justify-end'>
-        <TouchableOpacity onPress={()=>{navigation.navigate('Tabs')}} className={`border border-black h-[60px] w-[50%] rounded-[10px] bg-blue-600 items-center justify-center`}>
+        <TouchableOpacity onPress={()=>{navigation.navigate('Home')}} className={`border border-black h-[60px] w-[50%] rounded-[10px] bg-blue-600 items-center justify-center`}>
           <Text className='text-white text-[20px] font-bold'>Login</Text>
         </TouchableOpacity>
       </View>

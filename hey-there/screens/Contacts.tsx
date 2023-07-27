@@ -1,6 +1,7 @@
 import {
   SafeAreaView,
   FlatList,
+  Text,
 } from "react-native";
 import React from "react";
 import {
@@ -68,8 +69,8 @@ const contacts = [
 
 export const Contacts = () => {
   return (
-    <SafeAreaView className={`flex-1`}>
-      <HeadContainer>
+    <SafeAreaView className={`flex-1 mt-10`}>
+      {/* <HeadContainer>
         <HeaderText>Start Conversation</HeaderText>
         <SearchBarInput></SearchBarInput>
       </HeadContainer>
@@ -92,7 +93,9 @@ export const Contacts = () => {
             </Card>
           )}
         ></FlatList>
-      </Container>
+      </Container> */}
+      <Text>Contact page </Text>
+
     </SafeAreaView>
   );
 };

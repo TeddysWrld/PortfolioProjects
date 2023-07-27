@@ -141,6 +141,8 @@ export const Chats = () => {
               )}
               ></Animated.FlatList>
       </Container>
+
+
     </SafeAreaView>
   );
 };

@@ -1,18 +1,40 @@
 import { SafeAreaView, Text, View } from 'react-native';
-import { Conversation, SignIn, SignUp } from './screens';
+import { SignIn, SignUp } from './screens';
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Tabs from './screens/Tabs';
+import { useEffect } from 'react';
+import { db } from './firebase.config';
+import { collection, getDoc, getDocs } from 'firebase/firestore/lite';
+
+import { HomeScreen } from './screens/Tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { SignIn, SignUp } from './screens';
 
 export default function App() {
+
   const AppStack = createNativeStackNavigator();
+
+  async function getUsers(){
+
+    const userCol = collection(db, 'Users')
+    const docSnap = await getDocs(userCol)
+    docSnap.forEach((doc)=>{
+      console.log(doc.data());
+      
+    })
+  }
+
+  useEffect(()=>{
+    getUsers()
+
+  }, [])
+
   return (
     <NavigationContainer>
-      <AppStack.Navigator initialRouteName='Conversation'>
+      <AppStack.Navigator initialRouteName='Home'>
         <AppStack.Screen name="SignUp" component={SignUp} options={{headerShown:false}} />
         <AppStack.Screen name="SignIn" component={SignIn} options={{headerShown:false}} />
-        <AppStack.Screen name="Conversation" component={Conversation} />
+        <AppStack.Screen name="Home" component={HomeScreen} options={{headerShown:false}} />
       </AppStack.Navigator>
     </NavigationContainer>
 

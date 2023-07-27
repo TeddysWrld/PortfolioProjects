@@ -2,10 +2,8 @@ import * as React from 'react'
 import { Profile } from './Profile'
 import { Contacts } from './Contacts'
 import { Chats } from './Chats'
-import { Welcome } from './Welcome'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {hexColours} from '../constants'
 
@@ -13,7 +11,7 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 
-function HomeScreen()
+export function HomeScreen()
 {
     return(
         <Tab.Navigator initialRouteName='Home' 
@@ -44,16 +42,3 @@ function HomeScreen()
         </Tab.Navigator>
     );
 }
-
-function Tabs(props: any)
-{
-    return(
-        
-    <NavigationContainer>
-    <Stack.Navigator>
-      <Stack.Screen name='Home' component={HomeScreen} options={{headerShown:false}}/>
-    </Stack.Navigator>
-    </NavigationContainer>
-    );
-}
-export default Tabs;

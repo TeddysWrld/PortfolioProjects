@@ -9,7 +9,7 @@ import {
 import React from "react";
 import { hexColours } from "../constants";
 
-export const Profile = () => {
+export const Profile = ({navigation}:any) => {
   return (
     <SafeAreaView className={`flex-1 space-y-7`}>
       <View className="flex-1 items-center justify-center gap-8">
@@ -48,6 +48,10 @@ export const Profile = () => {
         <Text style={{ color: `#0000EE` }} className="text-base pl-4">
            Change password?
         </Text>
+
+        <TouchableOpacity  className="bg-black w-[40%] rounded-[15px]" onPress={()=>{navigation.navigate('SignIn')}}>
+          <Text className="text-white text-bold">LogOut</Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );

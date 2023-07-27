@@ -1,5 +1,5 @@
 export enum hexColours{
     "Purple"= "#301934",
-    "Blue"="#044B7F",
+    "Blue"="#0047AB",
     "White"="EEF4ED"
 }

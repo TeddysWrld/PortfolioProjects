@@ -57,10 +57,12 @@ export async function GetUsers(){
 }
 
 export async function GetConversations(){
-  //If user isn't signed in
+  //If user is not logged in return nothing
   if(auth.currentUser == undefined){
     return null
   }
+
+  //This is the query to get conversations of the logged in user
   const conversations:any[] = []
   await getDocs(query(collection(db, 'Conversations'), where("UserId", "==",auth.currentUser?.uid))).then((data)=> {
     conversations.push(data.docs[0].data())
@@ -69,11 +71,28 @@ export async function GetConversations(){
   return conversations
 }
 
+export async function StartConversation(){
+   //If user is not logged in return nothing
+   if(auth.currentUser == undefined){
+    return null
+  }
+
+  //This is how you start a new conversation
+  const newConversation = await addDoc(collection(db, "Conversations"), {
+    ConversationId: "",
+    UserId: auth.currentUser?.uid,
+  });
+  console.log(newConversation);
+
+}
+
 export async function GetMessages(convoId:string){
-  //Gotta use a query
+  //if no conversation id given return nothing
   if(convoId ==''){
     return null
   }
+
+  //This is the query to get messsages linked to a conversation that started
   const messages:any[]= []
   await getDocs(query(collection(db, 'Messages'), where("ConversationId", "==",convoId))).then((data)=> {
     messages.push(data.docs[0].data())    

@@ -5,8 +5,10 @@ export const Container = styled.View`
     flex: 1;
     padding-left: 5px;
     padding-right: 5px;
+    padding-top: 5px;
     align-items: center;
     background-color: #ffffff;
+
 
 `;
 
@@ -64,7 +66,7 @@ export const MessageText = styled.Text`
 
 //Header Style
 export const HeadContainer = styled.View`
-    position: 'absolute';
+    position: absolute;
     left: 0;
     right: 0;
     top: 0;

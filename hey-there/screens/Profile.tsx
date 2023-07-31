@@ -4,8 +4,8 @@ import {
   SafeAreaView,
   Image,
   TextInput,
-  TouchableOpacity,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import React from "react";
 import { SignOut } from "../hooks/firebaseHooks";
@@ -15,8 +15,8 @@ export const Profile = () => {
     SignOut()
   }
   return (
-    <SafeAreaView className={`flex-1 space-y-7`}>
-      <View className="flex-1 items-center justify-center gap-8">
+    <SafeAreaView className={`flex-1`}>
+     <View className="flex-1 items-center justify-center gap-6">
         <Image
           source={require("../assets/profile-pic.png")}
           className="w-40 h-40 rounded-full"
@@ -24,7 +24,15 @@ export const Profile = () => {
         />
       </View>
 
-      <ScrollView scrollEnabled={true} nestedScrollEnabled={true} showsVerticalScrollIndicator={false} className="flex-1 space-y-2">
+      <ScrollView 
+      scrollEnabled={true} 
+      nestedScrollEnabled={true} 
+      showsVerticalScrollIndicator={false} 
+      contentContainerStyle={{
+        paddingTop: 25,
+        paddingBottom: 25,
+      }}
+      className="flex-1 space-y-2 ">
         <Text className="text-base pl-4">Name:</Text>
         <TextInput
           placeholder="Name"
@@ -52,10 +60,11 @@ export const Profile = () => {
         <Text style={{ color: `#0000EE` }} className="text-base pl-4">
            Change password?
         </Text>
-
-        <TouchableOpacity  className="bg-black w-[40%] rounded-[15px]" onPress={handleSignOut}>
-          <Text className="text-white text-bold">LogOut</Text>
+        <View className=' space-y-4 items-center '>
+        <TouchableOpacity  className="bg-[#d90429] w-[40%] h-[30%] rounded-[6px]" onPress={handleSignOut}>
+          <Text className="text-white font-bold text-center text-[16px] py-1">LogOut</Text>
         </TouchableOpacity>
+      </View>
       </ScrollView>
     </SafeAreaView>
   );

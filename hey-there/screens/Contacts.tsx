@@ -1,13 +1,11 @@
 import {
   SafeAreaView,
   FlatList,
-  Text,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   Container,
-  HeadContainer,
   HeaderText,
   SearchBarInput,
   TextSection,
@@ -17,9 +15,9 @@ import {
   UserInfoText,
   UserName,
 } from "../styles/ChatsStyles";
-import { ListItem, SearchBar } from "react-native-elements";
+import { GetUsers } from "../hooks";
 
-const contacts = [
+const users = [
   {
     id: "1",
     userImg: require("../assets/profile-pic.png"),
@@ -67,35 +65,45 @@ const contacts = [
   },
 ];
 
-export const Contacts = () => {
+
+
+export const Contacts = ({navigation}: any) => {
+
+  const [contacts, setContacts] = useState<any>([]);
+
+  useEffect(() => {
+    GetUsers().then(data => console.log(setContacts(data)))
+
+  }, []);
+
   return (
-    <SafeAreaView className={`flex-1 mt-10`}>
-      {/* <HeadContainer>
-        <HeaderText>Start Conversation</HeaderText>
-        <SearchBarInput></SearchBarInput>
-      </HeadContainer>
+    <SafeAreaView className={`flex-1`}>
       <Container>
-        <FlatList
+        <FlatList 
+          ListHeaderComponent={
+      <>
+      <HeaderText>Start Conversation</HeaderText>
+      <SearchBarInput></SearchBarInput>
+      </>
+          }
           data={contacts}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.UserId}
           renderItem={({ item }) => (
-            <Card>
+            <Card onPress={() => navigation.navigate('Conversation',{ name: `${item.Name} ${item.Surname}`})}>
               <UserInfo>
                 <UserImgWrapper>
-                  <UserImg source={item.userImg} />
+                  <UserImg source={require('../assets/profile-pic.png')} />
                 </UserImgWrapper>
                 <TextSection>
                   <UserInfoText>
-                    <UserName>{item.userName}</UserName>
+                  <UserName>{item.Name} {item.Surname}</UserName>
                   </UserInfoText>
                 </TextSection>
               </UserInfo>
             </Card>
           )}
         ></FlatList>
-      </Container> */}
-      <Text>Contact page </Text>
-
+      </Container>
     </SafeAreaView>
   );
 };

@@ -3,10 +3,11 @@ import {
   Text,
   SafeAreaView,
   Animated,
+  FlatList,
 } from "react-native";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { hexColours } from "../constants";
-import { Card, Container, MessageText, PostTime, TextSection, UserImg, UserImgWrapper, UserInfo, UserInfoText, UserName } from "../styles/ChatsStyles";
+import { Card, Container, HeaderText, MessageText, PostTime, TextSection, UserImg, UserImgWrapper, UserInfo, UserInfoText, UserName } from "../styles/ChatsStyles";
 
 const messages = [
  {
@@ -83,48 +84,23 @@ const messages = [
   },
 ];
 
-const Header_Max_Height = 80;
+export const Chats = ({navigation}: any) => {
 
-const DynamicHeader = ({value}: any) => {
+  const [contacts, setContacts] = useState<any>([]);
   
-  const animatedHeaderHeight = value.interpolate({
-    inputRange: [0, Header_Max_Height],
-    outputRange: [0, -Header_Max_Height],
-  });
 
-  return (
-    <Animated.View
-      style={[
-        styles.header,
-        {
-          transform:  [{ translateY:animatedHeaderHeight}],
-        },
-      ]}>
-      <Text style={styles.title}>Chats</Text>
-    </Animated.View>
-  );
-};
-
-export const Chats = () => {
-  const scrollOffsetY = useRef(new Animated.Value(0)).current;
-  const diffClampScrollY = Animated.diffClamp(scrollOffsetY, 0, Header_Max_Height);
- 
   return (
     <SafeAreaView style={{flex: 1}}>
      
-        <DynamicHeader value={diffClampScrollY} />
         <Container >
-            <Animated.FlatList 
-              scrollEventThrottle={16}
-              onScroll={Animated.event(
-                [{nativeEvent: {contentOffset: {y: scrollOffsetY}}}],
-                {useNativeDriver: true} 
-              )}
-              style={{flex: 1, marginTop:Header_Max_Height}}
+            <FlatList 
+                 ListHeaderComponent={
+                  <HeaderText>Messages</HeaderText>
+                      }
               data={messages}
               keyExtractor={(item) => item.id}
               renderItem={({item}) =>(
-                <Card>
+                <Card onPress={() => navigation.navigate('Conversation',{ name: item.userName})}>
                   <UserInfo>
                   <UserImgWrapper>
                   <UserImg source={item.userImg} />
@@ -132,14 +108,14 @@ export const Chats = () => {
                 <TextSection>
                   <UserInfoText>
                     <UserName>{item.userName}</UserName>
-                    <PostTime>{item.messageTime}</PostTime>
+                    <PostTime>4 mins ago</PostTime>
                   </UserInfoText>
-                  <MessageText>{item.messageText}</MessageText>
+                  <MessageText>Hey there, this is my test for a post of my social app in React Native.</MessageText>
                 </TextSection>
                   </UserInfo>
                 </Card>
               )}
-              ></Animated.FlatList>
+              ></FlatList>
       </Container>
 
 
@@ -147,23 +123,3 @@ export const Chats = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  header: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    backgroundColor: "#ffffff",
-    zIndex: 1000,
-    elevation: 1000,
-    height: Header_Max_Height,
-    overflow: 'hidden',
-  },
-  title: {
-    color: `${hexColours.Purple}`,
-    fontWeight: "bold",
-    fontSize: 35,
-    paddingTop: 35,
-    paddingLeft: 12
-  }
-});

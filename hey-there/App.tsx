@@ -6,6 +6,7 @@ import { HomeScreen } from './screens/Tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { SignIn, SignUp } from './screens';
 import {onAuthStateChanged} from "firebase/auth";
+import { GetConversations, GetMessages, GetUsers } from './hooks';
 
 export default function App() {
 
@@ -17,11 +18,16 @@ export default function App() {
     if (initializing) setInitializing(false);
   }
 
-  useEffect(()=>{
+  useEffect(()=>{ 
+    //Examples of function use for getting conversations and messages!
+    // GetConversations().then((data)=>console.log(data))
+    // GetMessages("tSW7T5fu4xgG7Ogwp78R").then((data)=>{console.log("Messsages", data)})
+
     const subscriber = onAuthStateChanged(auth, authStateChange)
     return subscriber; // unsubscribe on unmount
   }, [])
 
+  
   //Add loading screen
   if (initializing) return null;
 

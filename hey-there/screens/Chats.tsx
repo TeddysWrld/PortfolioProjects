@@ -5,7 +5,7 @@ import {
   Animated,
   FlatList,
 } from "react-native";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { hexColours } from "../constants";
 import { Card, Container, HeaderText, MessageText, PostTime, TextSection, UserImg, UserImgWrapper, UserInfo, UserInfoText, UserName } from "../styles/ChatsStyles";
 
@@ -86,6 +86,9 @@ const messages = [
 
 export const Chats = ({navigation}: any) => {
 
+  const [contacts, setContacts] = useState<any>([]);
+  
+
   return (
     <SafeAreaView style={{flex: 1}}>
      
@@ -105,9 +108,9 @@ export const Chats = ({navigation}: any) => {
                 <TextSection>
                   <UserInfoText>
                     <UserName>{item.userName}</UserName>
-                    <PostTime>{item.messageTime}</PostTime>
+                    <PostTime>4 mins ago</PostTime>
                   </UserInfoText>
-                  <MessageText>{item.messageText}</MessageText>
+                  <MessageText>Hey there, this is my test for a post of my social app in React Native.</MessageText>
                 </TextSection>
                   </UserInfo>
                 </Card>

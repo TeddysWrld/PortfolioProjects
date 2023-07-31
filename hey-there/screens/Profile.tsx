@@ -60,7 +60,7 @@ export const Profile = () => {
         <Text style={{ color: `#0000EE` }} className="text-base pl-4">
            Change password?
         </Text>
-        <View>
+        <View className=' space-y-4 items-center '>
         <TouchableOpacity  className="bg-[#d90429] w-[40%] h-[30%] rounded-[6px]" onPress={handleSignOut}>
           <Text className="text-white font-bold text-center text-[16px] py-1">LogOut</Text>
         </TouchableOpacity>

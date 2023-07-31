@@ -47,12 +47,15 @@ export const SignOut =()=>{
 }
 
 export async function GetUsers(){
+    const list: any[] = []
     const userCol = collection(db, 'Users')
     const docSnap = await getDocs(userCol)
-    return docSnap.forEach((doc)=>{
-      console.log(doc.data());
+    docSnap.forEach((doc)=>{
+      list.push(doc.data())
       return doc.data()
     })
+
+    return list
 }
 
 export async function GetConversations(){

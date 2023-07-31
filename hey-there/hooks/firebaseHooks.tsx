@@ -1,6 +1,6 @@
 import {createUserWithEmailAndPassword, signOut,signInWithEmailAndPassword} from "firebase/auth";
 import { auth, db } from "../firebase.config";
-import { addDoc, collection, getDocs, where } from 'firebase/firestore/lite';
+import { addDoc, collection, getDocs, query, where, getDoc } from 'firebase/firestore/lite';
 
 export const signUp = (email:string, password:string, name:string, surname:string)=>{
     createUserWithEmailAndPassword(auth, email,password).then((credentials)=> {
@@ -22,6 +22,7 @@ export const signUp = (email:string, password:string, name:string, surname:strin
   }
 
 export const NewUserFirebase = async (name:string, surname:string, email:string, userId:string)=>{
+ 
   const newUser = await addDoc(collection(db, "Users"), {
     Name: name,
     Surname: surname,
@@ -50,32 +51,34 @@ export async function GetUsers(){
     const userCol = collection(db, 'Users')
     const docSnap = await getDocs(userCol)
     return docSnap.forEach((doc)=>{
-      console.log(doc.data());
+      // console.log(doc.data());
       return doc.data()
     })
 }
 
 export async function GetConversations(){
-  //Gotta use the query
-  const convoCol = collection(db, 'Conversations')
-  const test = where('ConversationId', '==', "TEST12")
-  console.log(test);
-  
-  const docSnap = await getDocs(convoCol)
-  const data = docSnap.forEach((doc)=>{
-    console.log(doc.data());
-    return doc.data()
+  //If user isn't signed in
+  if(auth.currentUser == undefined){
+    return null
+  }
+  const conversations:any[] = []
+  await getDocs(query(collection(db, 'Conversations'), where("UserId", "==",auth.currentUser?.uid))).then((data)=> {
+    conversations.push(data.docs[0].data())
   })
-  return data
+
+  return conversations
 }
 
-export async function GetMessages(){
+export async function GetMessages(convoId:string){
   //Gotta use a query
-  const userCol = collection(db, 'Messages')
-  const docSnap = await getDocs(userCol)
-  docSnap.forEach((doc)=>{
-    console.log(doc.data());
-    
+  if(convoId ==''){
+    return null
+  }
+  const messages:any[]= []
+  await getDocs(query(collection(db, 'Messages'), where("ConversationId", "==",convoId))).then((data)=> {
+    messages.push(data.docs[0].data())    
   })
+   
+  return messages
 }
 

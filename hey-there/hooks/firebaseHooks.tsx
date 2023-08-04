@@ -1,6 +1,6 @@
 import {createUserWithEmailAndPassword, signOut,signInWithEmailAndPassword} from "firebase/auth";
 import { auth, db } from "../firebase.config";
-import { addDoc, collection, getDocs, query, where, getDoc } from 'firebase/firestore/lite';
+import { addDoc, collection, getDocs, where } from 'firebase/firestore/lite';
 
 export const signUp = (email:string, password:string, name:string, surname:string)=>{
     createUserWithEmailAndPassword(auth, email,password).then((credentials)=> {
@@ -60,47 +60,48 @@ export async function GetUsers(){
 }
 
 export async function GetConversations(){
-  //If user is not logged in return nothing
-  if(auth.currentUser == undefined){
-    return null
-  }
-
-  //This is the query to get conversations of the logged in user
-  const conversations:any[] = []
-  await getDocs(query(collection(db, 'Conversations'), where("UserId", "==",auth.currentUser?.uid))).then((data)=> {
-    conversations.push(data.docs[0].data())
+  //Gotta use the query
+  const convoCol = collection(db, 'Conversations')
+  const test = where('ConversationId', '==', "TEST12")
+  console.log(test);
+  
+  const docSnap = await getDocs(convoCol)
+  const data = docSnap.forEach((doc)=>{
+    console.log(doc.data());
+    return doc.data()
   })
-
-  return conversations
+  return data
 }
 
-export async function StartConversation(){
-   //If user is not logged in return nothing
-   if(auth.currentUser == undefined){
-    return null
-  }
-
-  //This is how you start a new conversation
-  const newConversation = await addDoc(collection(db, "Conversations"), {
-    ConversationId: "",
-    UserId: auth.currentUser?.uid,
-  });
-  console.log(newConversation);
-
-}
-
-export async function GetMessages(convoId:string){
-  //if no conversation id given return nothing
-  if(convoId ==''){
-    return null
-  }
-
-  //This is the query to get messsages linked to a conversation that started
-  const messages:any[]= []
-  await getDocs(query(collection(db, 'Messages'), where("ConversationId", "==",convoId))).then((data)=> {
-    messages.push(data.docs[0].data())    
+export async function GetMessages(){
+  //Gotta use a query
+  const userCol = collection(db, 'Messages')
+  const docSnap = await getDocs(userCol)
+  docSnap.forEach((doc)=>{
+    console.log(doc.data());
+    
   })
-   
-  return messages
 }
 
+export async function GetMessages(conversationId: string){
+  const msgResponse = query(collection(db, 'Messages'), 
+                      where('ConversationId', '==', conversationId))
+  const querySnapshot  = await getDocs(msgResponse)
+  const data = querySnapshot.docs.map(doc => doc.data())
+  
+  return data
+}
+
+export async function GetChatsById(conversationId: string){
+
+  const messages = query(collection(db, 'Conversations'), 
+                        where('UserId', '==', conversationId)
+                        )
+  const querySnapshot  = await getDocs(messages)
+  const lastMessgaes = querySnapshot.docs.map(doc => doc.data().LastMessage)
+
+  const q = query(collection(db, "Messages"), where(documentId(), 'in', lastMessgaes));
+  const msgQuery = await getDocs(q)
+  const data = msgQuery.docs.map((doc) => ({docId: doc.id, ...doc.data()}))
+  return data
+}

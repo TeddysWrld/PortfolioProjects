@@ -1,15 +1,12 @@
 import {
-  StyleSheet,
-  Text,
   SafeAreaView,
-  Animated,
   FlatList,
 } from "react-native";
-import React, { useRef, useState } from "react";
-import { hexColours } from "../constants";
+import React, { useEffect, useState } from "react";
 import { Card, Container, HeaderText, MessageText, PostTime, TextSection, UserImg, UserImgWrapper, UserInfo, UserInfoText, UserName } from "../styles/ChatsStyles";
+import { GetChatsById } from "../hooks";
 
-const messages = [
+const convos = [
  {
     id: '1',
     userName: 'Jenny Doe',
@@ -86,8 +83,18 @@ const messages = [
 
 export const Chats = ({navigation}: any) => {
 
-  const [contacts, setContacts] = useState<any>([]);
+  const [messages, setMessages] = useState<any>([]);
   
+  useEffect(() => {
+    //GetConversations('TEST12').then(data => setMessages(data))
+    GetChatsById("ID1234567").then(data => {
+     // console.log(data)
+      setMessages(data)
+    })
+      
+  }, []);
+
+ 
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -98,19 +105,24 @@ export const Chats = ({navigation}: any) => {
                   <HeaderText>Messages</HeaderText>
                       }
               data={messages}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => item.docId}
               renderItem={({item}) =>(
-                <Card onPress={() => navigation.navigate('Conversation',{ name: item.userName})}>
+                <Card onPress={() => {
+                  navigation.navigate('Conversation',{ 
+                    name: item.Participant, 
+                    convoId: item.ConversationId, 
+                    userId: item.UserId,
+                    participantId: item.Id})}}> 
                   <UserInfo>
                   <UserImgWrapper>
-                  <UserImg source={item.userImg} />
+                  <UserImg source={require('../assets/profile-pic.png')}  />
                 </UserImgWrapper>
                 <TextSection>
                   <UserInfoText>
-                    <UserName>{item.userName}</UserName>
-                    <PostTime>4 mins ago</PostTime>
+                    <UserName>{item.Participant}</UserName>
+                    <PostTime>{item.CreatedAt.toDate().toDateString()}</PostTime>
                   </UserInfoText>
-                  <MessageText>Hey there, this is my test for a post of my social app in React Native.</MessageText>
+                  <MessageText>{item.Text}</MessageText>
                 </TextSection>
                   </UserInfo>
                 </Card>

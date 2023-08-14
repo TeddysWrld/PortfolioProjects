@@ -1,2 +1,5 @@
 # PortfolioProjects
-This repository is a combination of various projects
+
+HEY THERE Project
+A simple Expo project with chat functionality. The app was designed to send and receive messages to registered accounts. 
+Contributors: Teddy Mokele and Amanda Sinemane

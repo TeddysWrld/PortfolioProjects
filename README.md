@@ -2,4 +2,5 @@
 
 HEY THERE Project <br/>
 A simple Expo project with chat functionality. The app was designed to send and receive messages to registered accounts. <br/>
-Contributors: Teddy Mokele and Amanda Sinemane
+Contributors: Teddy Mokele and Amanda Sinemane <br/>
+Stack: Expo, React Native, Tailwind, Firebase, Typescript

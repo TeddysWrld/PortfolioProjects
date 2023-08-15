@@ -46,7 +46,7 @@ export const Profile = () => {
         <Image
           source={require("../assets/profile-pic.png")}
           className="w-40 h-40 rounded-full"
-          resizeMode="cover"
+          resizeMode={"cover"}
         />
       </View>
 
